@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMK Studio | Creative Design Agency</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Config for Custom Colors/Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B0C10',
+                            gray: '#1F2833',
+                            light: '#C5C6C7',
+                            cyan: '#66FCF1',
+                            teal: '#45A29E',
+                            purple: '#8B5CF6',
+                            accent: '#6366f1' // Indigo/Purple mix
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0C10; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #45A29E; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #66FCF1; 
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(31, 40, 51, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #66FCF1, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Loader for form */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #66FCF1;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide scrollbar for horizontal scroll areas if any */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-brand-dark text-brand-light font-sans overflow-x-hidden selection:bg-brand-cyan selection:text-brand-dark">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-display font-bold tracking-tighter text-white group">
+                KMK<span class="text-brand-cyan group-hover:text-brand-purple transition-colors duration-300">.</span>Studio
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="text-sm font-medium hover:text-brand-cyan transition-colors relative group">
+                    Home
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#services" class="text-sm font-medium hover:text-brand-cyan transition-colors relative group">
+                    Services
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#portfolio" class="text-sm font-medium hover:text-brand-cyan transition-colors relative group">
+                    Portfolio
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="text-sm font-medium hover:text-brand-cyan transition-colors relative group">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-cyan transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="px-5 py-2 rounded-full border border-brand-cyan text-brand-cyan hover:bg-brand-cyan hover:text-brand-dark transition-all duration-300 text-sm font-bold">
+                    Contact Us
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-brand-dark/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center space-y-8 md:hidden">
+            <button id="close-menu-btn" class="absolute top-6 right-6 text-white text-3xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="#home" class="mobile-link text-2xl font-display font-bold hover:text-brand-cyan">Home</a>
+            <a href="#services" class="mobile-link text-2xl font-display font-bold hover:text-brand-cyan">Services</a>
+            <a href="#portfolio" class="mobile-link text-2xl font-display font-bold hover:text-brand-cyan">Portfolio</a>
+            <a href="#about" class="mobile-link text-2xl font-display font-bold hover:text-brand-cyan">About</a>
+            <a href="#contact" class="mobile-link text-2xl font-display font-bold hover:text-brand-cyan">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Animated Background Blobs -->
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-cyan rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-brand-gray bg-brand-gray/30 backdrop-blur-sm">
+                <span class="text-brand-cyan text-sm font-semibold tracking-wide uppercase">Based in Sri Lanka</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight">
+                Where <span class="text-gradient">Creativity</span><br>
+                Comes Alive
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">
+                Logos, Branding, Social Media Designs & Visual Creativity tailored to elevate your brand identity in the digital age.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <a href="#portfolio" class="group relative px-8 py-4 bg-brand-cyan text-brand-dark font-bold rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(102,252,241,0.5)]">
+                    <span class="relative z-10">View Portfolio</span>
+                    <div class="absolute inset-0 h-full w-full scale-0 rounded-full transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                </a>
+                <a href="#contact" class="px-8 py-4 border border-gray-600 text-white font-bold rounded-full hover:border-brand-cyan hover:text-brand-cyan transition-all hover:bg-brand-cyan/5">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#services" class="text-gray-500 hover:text-brand-cyan transition-colors">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-brand-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal-on-scroll">
+                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4">Our <span class="text-brand-cyan">Services</span></h2>
+                <div class="h-1 w-20 bg-gradient-to-r from-brand-cyan to-purple-600 mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-400 max-w-xl mx-auto">We provide comprehensive design solutions to help your business stand out.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/20">
+                        <i class="fas fa-pen-nib text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Logo Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Unique, memorable logos that capture the essence of your brand and make a lasting impression.</p>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-orange-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-pink-500/20">
+                        <i class="fas fa-hashtag text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Social Media Posts</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Engaging visuals crafted for Instagram, Facebook, and LinkedIn to boost your online presence.</p>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-cyan-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-cyan-500/20">
+                        <i class="fas fa-image text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Banner Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">High-impact web banners and headers designed to convert visitors into customers.</p>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-yellow-500/20">
+                        <i class="fas fa-id-card text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Business Card</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Professional, sleek business card designs that network as hard as you do.</p>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-indigo-500/20">
+                        <i class="fas fa-print text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Print Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Brochures, flyers, and posters designed with precision for the physical world.</p>
+                </div>
+                
+                 <!-- Service Card 6 -->
+                 <div class="glass-card p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-gray-500/20">
+                        <i class="fas fa-layer-group text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-cyan transition-colors">Brand Identity</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Complete brand guidelines including color palettes, typography, and asset libraries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-[#0f1115]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal-on-scroll">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold mb-2">Selected <span class="text-brand-cyan">Works</span></h2>
+                    <div class="h-1 w-20 bg-gradient-to-r from-brand-cyan to-purple-600 rounded-full"></div>
+                </div>
+                <p class="text-gray-400 mt-4 md:mt-0 max-w-md text-right md:text-left">A showcase of our latest projects and creative endeavors.</p>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Item 1 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" onclick="openModal('https://images.unsplash.com/photo-1626785774573-4b7993143a26?q=80&w=1000&auto=format&fit=crop', 'Neon Brand Identity')">
+                    <img src="https://images.unsplash.com/photo-1626785774573-4b7993143a26?q=80&w=800&auto=format&fit=crop" alt="Project 1" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">Branding</span>
+                        <h3 class="text-xl font-bold text-white">Neon Flux Identity</h3>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" style="transition-delay: 100ms;" onclick="openModal('https://images.unsplash.com/photo-1558655146-d09347e0b7a9?q=80&w=1000&auto=format&fit=crop', 'Minimalist Business Card')">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a9?q=80&w=800&auto=format&fit=crop" alt="Project 2" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">Print</span>
+                        <h3 class="text-xl font-bold text-white">Minimalist Card</h3>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" style="transition-delay: 200ms;" onclick="openModal('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', 'Social Media Campaign')">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop" alt="Project 3" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">Social</span>
+                        <h3 class="text-xl font-bold text-white">Instagram Campaign</h3>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" onclick="openModal('https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1000&auto=format&fit=crop', 'Modern Packaging')">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800&auto=format&fit=crop" alt="Project 4" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">Packaging</span>
+                        <h3 class="text-xl font-bold text-white">Eco Packaging</h3>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" style="transition-delay: 100ms;" onclick="openModal('https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1000&auto=format&fit=crop', 'UI/UX Dashboard')">
+                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop" alt="Project 5" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">UI/UX</span>
+                        <h3 class="text-xl font-bold text-white">Fintech Dashboard</h3>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="group relative overflow-hidden rounded-xl cursor-pointer reveal-on-scroll" style="transition-delay: 200ms;" onclick="openModal('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1000&auto=format&fit=crop', 'Corporate Banner')">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop" alt="Project 6" class="w-full h-72 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-brand-cyan text-sm font-bold uppercase tracking-wider mb-1">Marketing</span>
+                        <h3 class="text-xl font-bold text-white">Conference Visuals</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button class="px-8 py-3 border border-gray-700 rounded-full text-gray-300 hover:border-brand-cyan hover:text-brand-cyan transition-all">
+                    Load More Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-brand-dark relative overflow-hidden">
+        <!-- Decorative Elements -->
+        <div class="absolute right-0 top-20 w-64 h-64 bg-brand-cyan/5 rounded-full filter blur-3xl"></div>
+        <div class="absolute left-0 bottom-20 w-64 h-64 bg-purple-600/5 rounded-full filter blur-3xl"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Image Side -->
+                <div class="w-full lg:w-1/2 reveal-on-scroll">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-brand-cyan to-purple-600 rounded-2xl opacity-30 blur-lg"></div>
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop" alt="KMK Team" class="relative rounded-2xl shadow-2xl w-full object-cover h-[500px] grayscale hover:grayscale-0 transition-all duration-500">
+                        
+                        <!-- Floating Stats Card -->
+                        <div class="absolute -bottom-6 -right-6 bg-brand-gray p-6 rounded-xl border border-gray-700 shadow-xl hidden md:block">
+                            <div class="flex items-center gap-4">
+                                <div class="text-4xl font-bold text-brand-cyan">5+</div>
+                                <div class="text-sm text-gray-300 leading-tight">Years of<br>Experience</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Side -->
+                <div class="w-full lg:w-1/2 reveal-on-scroll">
+                    <h4 class="text-brand-cyan font-bold uppercase tracking-widest mb-2">About Us</h4>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white mb-6">We are a creative team from <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">Sri Lanka</span></h2>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        KMK Studio is a collective of passionate designers and strategists dedicated to crafting visual stories that resonate. We believe in the power of design to transform businesses and connect with audiences on a deeper level.
+                    </p>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        From the vibrant streets of Colombo to the global digital landscape, we bring a unique blend of cultural richness and modern minimalism to every project. Whether you're a startup finding your footing or an established brand seeking a refresh, we are here to elevate your visual identity.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-brand-cyan"></i>
+                            <span class="text-gray-300">Creative Solutions</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-brand-cyan"></i>
+                            <span class="text-gray-300">Fast Delivery</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-brand-cyan"></i>
+                            <span class="text-gray-300">24/7 Support</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-brand-cyan"></i>
+                            <span class="text-gray-300">Unique Designs</span>
+                        </div>
+                    </div>
+
+                    <a href="#contact" class="inline-flex items-center gap-2 text-brand-cyan font-bold hover:gap-4 transition-all">
+                        Start a Project <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-[#0f1115]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto glass-card rounded-3xl p-8 md:p-12 reveal-on-scroll">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">Let's Work <span class="text-brand-cyan">Together</span></h2>
+                    <p class="text-gray-400">Have a project in mind? Fill out the form below and we'll get back to you shortly.</p>
+                </div>
+
+                <form id="contactForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Name -->
+                        <div class="relative">
+                            <input type="text" id="name" class="peer w-full bg-brand-dark/50 border border-gray-700 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all placeholder-transparent" placeholder="Name">
+                            <label for="name" class="absolute left-4 top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-brand-cyan peer-focus:bg-[#0f1115] peer-focus:px-1 pointer-events-none">Your Name</label>
+                            <p class="text-red-500 text-xs mt-1 hidden" id="nameError">Please enter your name</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="relative">
+                            <input type="email" id="email" class="peer w-full bg-brand-dark/50 border border-gray-700 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all placeholder-transparent" placeholder="Email">
+                            <label for="email" class="absolute left-4 top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-brand-cyan peer-focus:bg-[#0f1115] peer-focus:px-1 pointer-events-none">Email Address</label>
+                            <p class="text-red-500 text-xs mt-1 hidden" id="emailError">Please enter a valid email</p>
+                        </div>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="relative">
+                        <textarea id="message" rows="5" class="peer w-full bg-brand-dark/50 border border-gray-700 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all placeholder-transparent resize-none" placeholder="Message"></textarea>
+                        <label for="message" class="absolute left-4 top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-4 peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-brand-cyan peer-focus:bg-[#0f1115] peer-focus:px-1 pointer-events-none">Tell us about your project</label>
+                        <p class="text-red-500 text-xs mt-1 hidden" id="messageError">Message cannot be empty</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-brand-cyan to-teal-500 text-brand-dark font-bold py-4 rounded-lg hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:-translate-y-1 flex justify-center items-center gap-2">
+                        <span>Send Message</span>
+                        <div class="loader" id="formLoader"></div>
+                    </button>
+                    
+                    <div id="formSuccess" class="hidden bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-lg text-center">
+                        <i class="fas fa-check-circle mr-2"></i> Message sent successfully! We'll be in touch.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark border-t border-gray-800 pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="text-2xl font-display font-bold tracking-tighter text-white mb-4 inline-block">
+                        KMK<span class="text-brand-cyan">.</span>Studio
+                    </a>
+                    <p class="text-gray-400 max-w-sm mb-6">
+                        Creating visual experiences that inspire and engage. Based in Sri Lanka, working globally.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-brand-cyan hover:text-brand-dark transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-brand-cyan hover:text-brand-dark transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-brand-cyan hover:text-brand-dark transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-brand-cyan hover:text-brand-dark transition-all">
+                            <i class="fab fa-behance"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#home" class="hover:text-brand-cyan transition-colors">Home</a></li>
+                        <li><a href="#services" class="hover:text-brand-cyan transition-colors">Services</a></li>
+                        <li><a href="#portfolio" class="hover:text-brand-cyan transition-colors">Portfolio</a></li>
+                        <li><a href="#about" class="hover:text-brand-cyan transition-colors">About</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-envelope text-brand-cyan"></i> hello@kmkstudio.com</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-phone text-brand-cyan"></i> +94 77 123 4567</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-brand-cyan"></i> Colombo, Sri Lanka</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; 2023 KMK Studio. All rights reserved.</p>
+                <button onclick="scrollToTop()" class="group flex items-center gap-2 text-gray-400 hover:text-brand-cyan transition-colors">
+                    Back to Top <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white text-4xl hover:text-brand-cyan transition-colors focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center">
+            <img id="modalImage" src="" alt="Full View" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-[0_0_30px_rgba(102,252,241,0.2)]">
+            <h3 id="modalTitle" class="text-2xl font-display font-bold text-white mt-6 text-center"></h3>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass', 'shadow-lg');
+                navbar.classList.remove('py-4');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('glass', 'shadow-lg');
+                navbar.classList.remove('py-2');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isClosed = mobileMenu.classList.contains('translate-x-full');
+            if (isClosed) {
+                mobileMenu.classList.remove('translate-x-full');
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                    entry.target.style.opacity = "1";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+            el.style.opacity = "0";
+            observer.observe(el);
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function openModal(src, title) {
+            modalImg.src = src;
+            modalTitle.textContent = title;
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalImg.src = '';
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Form Validation & Handling
+        const contactForm = document.getElementById('contactForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const formLoader = document.getElementById('formLoader');
+        const formSuccess = document.getElementById('formSuccess');
+
+        // Helper to show error
+        function showError(input, msgId) {
+            const errorEl = document.getElementById(msgId);
+            errorEl.classList.remove('hidden');
+            input.classList.add('border-red-500');
+            input.classList.remove('border-gray-700', 'border-green-500');
+        }
+
+        // Helper to show success
+        function showSuccess(input, msgId) {
+            const errorEl = document.getElementById(msgId);
+            errorEl.classList.add('hidden');
+            input.classList.remove('border-red-500', 'border-gray-700');
+            input.classList.add('border-green-500');
+        }
+
+        // Real-time validation
+        nameInput.addEventListener('input', () => {
+            if (nameInput.value.trim() === '') {
+                showError(nameInput, 'nameError');
+            } else {
+                showSuccess(nameInput, 'nameError');
+            }
+        });
+
+        emailInput.addEventListener('input', () => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value.trim())) {
+                showError(emailInput, 'emailError');
+            } else {
+                showSuccess(emailInput, 'emailError');
+            }
+        });
+
+        messageInput.addEventListener('input', () => {
+            if (messageInput.value.trim() === '') {
+                showError(messageInput, 'messageError');
+            } else {
+                showSuccess(messageInput, 'messageError');
+            }
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            let isValid = true;
+
+            // Validate Name
+            if (nameInput.value.trim() === '') {
+                showError(nameInput, 'nameError');
+                isValid = false;
+            } else {
+                showSuccess(nameInput, 'nameError');
+            }
+
+            // Validate Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value.trim())) {
+                showError(emailInput, 'emailError');
+                isValid = false;
+            } else {
+                showSuccess(emailInput, 'emailError');
+            }
+
+            // Validate Message
+            if (messageInput.value.trim() === '') {
+                showError(messageInput, 'messageError');
+                isValid = false;
+            } else {
+                showSuccess(messageInput, 'messageError');
+            }
+
+            if (isValid) {
+                // Simulate API call
+                const btnText = submitBtn.querySelector('span');
+                btnText.textContent = 'Sending...';
+                formLoader.style.display = 'block';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    formLoader.style.display = 'none';
+                    btnText.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    
+                    formSuccess.classList.remove('hidden');
+                    contactForm.reset();
+                    
+                    // Reset border colors
+                    [nameInput, emailInput, messageInput].forEach(input => {
+                        input.classList.remove('border-green-500');
+                        input.classList.add('border-gray-700');
+                    });
+
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        formSuccess.classList.add('hidden');
+                    }, 5000);
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
